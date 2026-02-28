@@ -29,6 +29,23 @@ function App() {
   const menuRef = useRef<HTMLDivElement>(null);
   const testimonialsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
+  const navbarRef = useRef<HTMLElement>(null);
+
+  // Navbar background on scroll
+  useEffect(() => {
+    const navbar = navbarRef.current;
+    if (!navbar) return;
+    const handleScroll = () => {
+      if (window.scrollY > 60) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    };
+    handleScroll(); // run once in case page loads scrolled
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -196,7 +213,7 @@ function App() {
       <div className="grain-overlay" />
       
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-5 flex items-center justify-between transition-all duration-300" id="navbar">
+      <nav ref={navbarRef} className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-5 flex items-center justify-between transition-all duration-300" id="navbar">
         <a href="#" className="font-mono text-sm uppercase tracking-[0.2em] text-charcoal font-medium">
           Velvet & Bean
         </a>
